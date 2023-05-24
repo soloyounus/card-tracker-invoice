@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-xs-12 col-sm-10 col-sm-push-1">
+    <div id="generateInvoice">
+      <%= form_tag(
+        { controller: 'invoices', action: 'create' },
+        {
+          method: 'post',
+          id: 'generateInvoiceForm', 
+          remote: true,
+        }) do %>
+        <div class="form-group">
+          <%= label_tag :partner_id, 'Partner' %>
+          <%= select_tag 'partner_id', options_for_select(@partners) %>
+        </div>
+        <div class="form-group">
+          <%= label_tag :start_month, 'Month' %>
+          <%= select_date Date.today.advance(months: -1).at_beginning_of_month, prefix: 'start_date', discard_day: true, order: [:month, :year]  %>
+        </div>
+        <div id="end_date_fields" class="form-group hidden">
+          <%= label_tag :end_month, 'End Month' %>
+          <%= select_date Date.today.advance(months: -1).at_beginning_of_month, prefix: 'end_date', discard_day: true, order: [:month, :year]  %>
+        </div>
+        <div class="form-group">
+          <%= label_tag :invoice_number, 'Invoice Number' %>
+          <%= number_field_tag :invoice_number, 10000, min: 1, step: 1 %>
+        </div>
+        <div class="form-group">
+          <div class='form-error help-block hidden'></div>
+          <%= submit_tag "Generate" %>
+        </div>
+      <% end %>
+    </div>
+    <div id="jobStatus">
+      <h3>Job list</h3>
+      <p class="jw-status jw-status--conn">Connected to server</p>
+      <p class="jw-status jw-status--disc">connecting...</p>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Account</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
